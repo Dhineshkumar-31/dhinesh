@@ -115,8 +115,19 @@ export async function POST(req: NextRequest) {
     });
 
     return response;
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Registration error:", error);
+    const err = error as { message?: string; code?: string };
+    const msg = err?.message || "";
+    if (msg.includes("does not exist") || err?.code === "P2021" || err?.code === "P1001") {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Database tables are not initialized yet. Please run prisma db push or check your database connection.",
+        },
+        { status: 500 }
+      );
+    }
     return NextResponse.json({ success: false, message: "Internal server error" }, { status: 500 });
   }
 }
