@@ -1,0 +1,2370 @@
+# MASTER PROMPT — BUILD THE COMPLETE APPLICATION
+
+You are a **Senior Full-Stack Architect, Product Designer, UI/UX Engineer, Backend Engineer, Database Architect, Security Engineer, and DevOps Engineer**.
+
+Build a complete production-ready application called:
+
+# VeetuKanakku
+### House Construction Expense & Budget Manager
+**Tamil:** வீட்டுக் கணக்கு
+
+The purpose of this application is to help users track **every expense involved in building a house**, understand how much they have spent so far, organize expenses by category and construction stage, and generate **daily, monthly, and yearly PDF reports**.
+
+This application must be designed as a **real-world multi-user SaaS-style application**, not as a demo or prototype.
+
+---
+
+# 1. CORE BUSINESS REQUIREMENT
+
+A user is constructing a house and currently maintains rough notes about expenses.
+
+The application should replace those rough notes with a structured digital expense-management system.
+
+The user should be able to record:
+
+- Materials
+- Labour
+- Labour workers
+- Contractor expenses
+- Transportation
+- Equipment / machine expenses
+- Electrical work
+- Plumbing work
+- Carpenter work
+- Painting work
+- Tiles / flooring
+- Doors and windows
+- Cement
+- Sand / M-Sand
+- Bricks / blocks
+- Steel
+- Aggregates / jelly
+- Wood
+- Pipes
+- Wires
+- Paint
+- Hardware
+- Water
+- Construction tools
+- Government / approval expenses
+- Engineer / architect expenses
+- Miscellaneous expenses
+- Any custom expense
+
+The application must answer questions such as:
+
+- How much have I spent today?
+- How much have I spent this month?
+- How much have I spent this year?
+- How much have I spent so far for my house?
+- How much was spent on materials?
+- How much was spent on labour?
+- How much was spent on cement?
+- How much was spent on steel?
+- How much was spent on bricks?
+- How much was spent on each construction stage?
+- Who supplied the material?
+- Which labour work cost more?
+- What is my total budget?
+- How much budget is remaining?
+- Which category is consuming the most money?
+
+---
+
+# 2. TECHNOLOGY STACK
+
+Use the following stack unless there is a strong technical reason to change it.
+
+## Frontend + Backend
+
+- Next.js
+- TypeScript
+- React
+- App Router
+- Tailwind CSS
+- shadcn/ui
+- Lucide Icons
+- React Hook Form
+- Zod
+- Recharts
+- TanStack Table where required
+
+## Backend
+
+Use Next.js server-side APIs / Route Handlers.
+
+Create a clean API architecture.
+
+Example:
+
+/api/auth/*
+/api/users/*
+/api/houses/*
+/api/expenses/*
+/api/materials/*
+/api/labour/*
+/api/categories/*
+/api/reports/*
+/api/admin/*
+
+## Database
+
+Use:
+
+- PostgreSQL
+- Prisma ORM
+
+The database architecture must be production-ready and relational.
+
+## Authentication
+
+Implement secure authentication.
+
+Users register with:
+
+- Username
+- Email
+- Password
+- Confirm Password
+
+Passwords must NEVER be stored in plain text.
+
+Use proper password hashing such as:
+
+- Argon2 or bcrypt
+
+Use secure session-based authentication or secure JWT authentication with:
+
+- HTTP-only cookies
+- Secure cookie settings
+- SameSite protection
+- Proper session expiration
+- Authentication middleware
+
+Do not store sensitive authentication data in localStorage.
+
+---
+
+# 3. APPLICATION NAME / BRANDING
+
+Application name:
+
+**VeetuKanakku**
+
+Tagline:
+
+**Smart House Construction Expense Management**
+
+Tamil:
+
+**உங்கள் வீட்டு கட்டுமான செலவுகளை எளிதாக நிர்வகிக்கவும்**
+
+Create a professional construction-finance style visual identity.
+
+The UI should feel:
+
+- Modern
+- Clean
+- Professional
+- Simple
+- Trustworthy
+- Mobile friendly
+- Easy for non-technical users
+
+Do NOT make it look like a complicated accounting application.
+
+---
+
+# 4. MULTI-LANGUAGE SUPPORT
+
+The application MUST support:
+
+### English
+### Tamil
+
+Implement proper internationalization.
+
+Create a language switcher:
+
+**English | தமிழ்**
+
+The selected language must affect:
+
+- Navigation
+- Buttons
+- Forms
+- Validation messages
+- Dashboard
+- Categories
+- Reports
+- Tables
+- Empty states
+- Notifications
+- Admin panel
+
+Do not hardcode UI text everywhere.
+
+Create translation dictionaries such as:
+
+/locales/en.json
+/locales/ta.json
+
+The user should be able to switch language without breaking the current page.
+
+Persist the selected language for the user.
+
+---
+
+# 5. USER REGISTRATION
+
+Create a beautiful registration page.
+
+Fields:
+
+- Full Name
+- Username
+- Email
+- Password
+- Confirm Password
+
+Validation:
+
+Username:
+- Required
+- Unique
+- Minimum length
+- Allow letters, numbers and safe characters
+
+Email:
+- Required
+- Valid email format
+- Unique
+
+Password:
+- Required
+- Minimum 8 characters
+- Must contain a reasonable combination of characters
+
+Confirm Password:
+- Must match password
+
+Show field-level validation.
+
+Do not show only generic popup errors.
+
+Errors must appear directly below the relevant field.
+
+---
+
+# 6. LOGIN
+
+Create a secure login page.
+
+User can log in using:
+
+- Username or Email
+- Password
+
+Features:
+
+- Remember session securely
+- Logout
+- Invalid credentials handling
+- Loading state
+- Show/hide password
+- Friendly error messages
+
+Add:
+
+**Forgot Password**
+
+If implementing email-based password reset, use secure expiring reset tokens.
+
+---
+
+# 7. ADMIN AUTHENTICATION
+
+Create a separate secure Admin Login.
+
+There must be an admin role.
+
+The admin credentials must NOT be hardcoded inside frontend code.
+
+Use environment variables and/or a secure database seed.
+
+Example:
+
+ADMIN_USERNAME
+ADMIN_PASSWORD
+
+However:
+
+- Never expose these values to the browser
+- Never return the admin password through APIs
+- Never log the password
+- Hash the admin password in the database if stored there
+- Admin routes must be protected server-side
+
+Admin login:
+
+/admin/login
+
+Admin dashboard:
+
+/admin
+
+---
+
+# 8. USER ROLE SYSTEM
+
+Initially support:
+
+### USER
+Normal application user.
+
+### ADMIN
+Application administrator.
+
+Create a scalable role structure so future roles can be added.
+
+---
+
+# 9. FIRST-TIME USER ONBOARDING
+
+After registration, guide the user through creating their house/construction project.
+
+The user should enter:
+
+- House Name
+- Owner Name
+- Construction Location
+- Start Date
+- Expected Completion Date
+- Total Estimated Budget
+- Number of Floors
+- House Type
+- Notes
+
+Example:
+
+House Name:
+"My New House"
+
+Budget:
+₹25,00,000
+
+The user can later edit these details.
+
+---
+
+# 10. MULTIPLE HOUSE SUPPORT
+
+Design the system so one user can eventually manage multiple houses/projects.
+
+Example:
+
+My Houses:
+
+1. My New House
+2. Rental House
+3. Parent's House
+
+The current version should support at least one active house but the database should be designed for multiple houses.
+
+All expenses must belong to a specific house/project.
+
+---
+
+# 11. MAIN DASHBOARD
+
+The dashboard is the most important page.
+
+Create a highly user-friendly dashboard.
+
+Show summary cards:
+
+### Total Budget
+₹25,00,000
+
+### Total Spent
+₹12,48,500
+
+### Remaining Budget
+₹12,51,500
+
+### Today's Expense
+₹8,250
+
+### This Month
+₹1,45,500
+
+### This Year
+₹8,20,000
+
+Also show:
+
+- Budget utilization percentage
+- Expense trend
+- Category breakdown
+- Construction-stage breakdown
+- Recent transactions
+- Highest spending category
+- Latest expense
+- Upcoming construction stage if available
+
+Charts:
+
+- Monthly expense line chart
+- Category pie/donut chart
+- Construction stage bar chart
+
+Use Recharts.
+
+Do not overload the screen with too many charts.
+
+---
+
+# 12. EXPENSE ENTRY SYSTEM
+
+Create the main:
+
+**Add Expense**
+
+feature.
+
+The expense form should be fast and easy to use.
+
+Fields:
+
+### Basic Information
+
+- Expense Date
+- Expense Type
+- Category
+- Construction Stage
+
+### Expense Details
+
+- Item / Description
+- Quantity
+- Unit
+- Unit Price
+- Total Amount
+
+Calculation:
+
+Total Amount = Quantity × Unit Price
+
+Allow the user to manually override total amount when required, but validate it.
+
+### Supplier / Labour Information
+
+- Supplier Name
+- Worker Name
+- Contractor Name
+- Phone Number
+
+Depending on expense type, show only relevant fields.
+
+### Payment Information
+
+- Payment Method
+- Paid Amount
+- Balance Amount
+- Payment Status
+
+Payment methods:
+
+- Cash
+- UPI
+- Bank Transfer
+- Card
+- Cheque
+- Credit
+- Other
+
+### Additional Information
+
+- Notes
+- Receipt / Bill attachment
+
+---
+
+# 13. EXPENSE TYPES
+
+Create predefined expense types:
+
+- Material
+- Labour
+- Contractor
+- Transportation
+- Equipment
+- Service
+- Miscellaneous
+
+Allow custom types later.
+
+---
+
+# 14. MATERIAL MANAGEMENT
+
+Create a Material Management section.
+
+A material record can contain:
+
+- Material Name
+- Category
+- Quantity
+- Unit
+- Unit Price
+- Total Cost
+- Supplier
+- Purchase Date
+- Invoice Number
+- Notes
+
+Example materials:
+
+- Cement
+- M-Sand
+- P-Sand
+- Bricks
+- Blocks
+- Steel
+- Jelly
+- Gravel
+- Wood
+- Tiles
+- Pipes
+- Electrical Wire
+- Paint
+- Doors
+- Windows
+- Plumbing Items
+- Hardware
+
+Units:
+
+- Piece
+- Bag
+- Kg
+- Ton
+- Unit
+- Load
+- Cubic Feet
+- Cubic Meter
+- Feet
+- Meter
+- Day
+- Hour
+- Litre
+- Other
+
+Allow custom units.
+
+---
+
+# 15. LABOUR MANAGEMENT
+
+Create a separate Labour section.
+
+Fields:
+
+- Worker Name
+- Labour Type
+- Phone Number
+- Daily Rate
+- Work Date
+- Number of Days
+- Number of Workers
+- Total Amount
+- Paid Amount
+- Balance
+- Notes
+
+Labour types:
+
+- Mason
+- Mason Assistant
+- Carpenter
+- Electrician
+- Plumber
+- Painter
+- Tile Worker
+- Steel Worker
+- Shuttering Worker
+- General Labour
+- Supervisor
+- Other
+
+Example:
+
+Mason = ₹1,200/day
+Assistant = ₹850/day
+Workers = 4
+Days = 5
+
+Automatically calculate:
+
+Total = Rate × Workers × Days
+
+Allow manual adjustments when necessary.
+
+---
+
+# 16. CONSTRUCTION STAGES
+
+Create predefined construction stages.
+
+Example:
+
+1. Planning
+2. Site Preparation
+3. Foundation
+4. Basement
+5. Pillars / Columns
+6. Brick Work
+7. Lintel
+8. Roofing
+9. Electrical
+10. Plumbing
+11. Doors & Windows
+12. Flooring
+13. Plastering
+14. Painting
+15. Kitchen
+16. Interior Work
+17. Exterior Work
+18. Final Finishing
+19. Miscellaneous
+
+Allow users to add custom stages.
+
+Each expense must optionally be linked to a construction stage.
+
+---
+
+# 17. EXPENSE LIST PAGE
+
+Create a professional data table.
+
+Columns:
+
+- Date
+- Description
+- Type
+- Category
+- Stage
+- Quantity
+- Unit
+- Unit Price
+- Total
+- Paid
+- Balance
+- Supplier/Worker
+- Payment Status
+- Actions
+
+Actions:
+
+- View
+- Edit
+- Delete
+
+Features:
+
+- Search
+- Filter
+- Date range
+- Category filter
+- Type filter
+- Stage filter
+- Payment status filter
+- Sorting
+- Pagination or virtual scrolling
+- Responsive design
+- Mobile-friendly table/card view
+
+Show confirmation before delete.
+
+---
+
+# 18. QUICK ADD EXPENSE
+
+The dashboard should have a highly visible:
+
+**+ Add Expense**
+
+button.
+
+On mobile, make it easy to access.
+
+Consider a floating action button.
+
+The user should be able to add an expense in a few seconds.
+
+---
+
+# 19. DAILY SUMMARY
+
+Create:
+
+/reports/daily
+
+The user can select a date.
+
+Show:
+
+- Total expense
+- Material expense
+- Labour expense
+- Other expense
+- Number of transactions
+- Category summary
+- Transaction details
+
+Example:
+
+01 October 2026
+
+Total:
+₹18,450
+
+Material:
+₹12,300
+
+Labour:
+₹5,500
+
+Other:
+₹650
+
+Provide:
+
+**Download Daily PDF**
+
+---
+
+# 20. MONTHLY SUMMARY
+
+Create:
+
+/reports/monthly
+
+User selects:
+
+- Year
+- Month
+
+Show:
+
+- Total monthly expense
+- Material
+- Labour
+- Contractor
+- Equipment
+- Transportation
+- Other
+- Category breakdown
+- Construction stage breakdown
+- Daily spending trend
+- Number of transactions
+
+Provide:
+
+**Download Monthly PDF**
+
+---
+
+# 21. YEARLY SUMMARY
+
+Create:
+
+/reports/yearly
+
+User selects year.
+
+Show:
+
+- Total yearly expense
+- Monthly breakdown
+- Category breakdown
+- Construction stage breakdown
+- Highest spending month
+- Highest spending category
+- Total budget
+- Total spent
+- Remaining budget
+
+Provide:
+
+**Download Yearly PDF**
+
+---
+
+# 22. PDF REPORT GENERATION
+
+PDF support is mandatory.
+
+Generate professional PDF reports.
+
+PDF should contain:
+
+- VeetuKanakku branding
+- House name
+- Owner name
+- Location
+- Report type
+- Date range
+- Total budget
+- Total spent
+- Remaining amount
+- Category summary
+- Construction stage summary
+- Expense details
+- Total amount
+
+Reports:
+
+### Daily PDF
+### Monthly PDF
+### Yearly PDF
+### Custom Date Range PDF
+
+PDF must be clean and printable.
+
+Use a suitable server-side PDF generation library.
+
+Do not rely only on browser print.
+
+Use Indian currency formatting:
+
+₹1,25,500.00
+
+---
+
+# 23. CUSTOM DATE RANGE REPORT
+
+Allow users to select:
+
+From Date
+To Date
+
+Then generate a report.
+
+Example:
+
+01-Jun-2026 to 30-Sep-2026
+
+Show:
+
+- Total expenses
+- Category breakdown
+- Daily/monthly trend
+- Detailed transactions
+
+Provide PDF download.
+
+---
+
+# 24. BUDGET MANAGEMENT
+
+User can define:
+
+### Estimated Budget
+
+Example:
+
+₹30,00,000
+
+Dashboard calculates:
+
+Budget Remaining = Budget - Total Spent
+
+Budget Used % = Total Spent / Budget × 100
+
+Show visual progress.
+
+Color/visual warning when:
+
+- 70% used
+- 85% used
+- 100% exceeded
+
+Do not allow incorrect calculations.
+
+---
+
+# 25. CATEGORY MANAGEMENT
+
+Create default categories.
+
+Example:
+
+Materials
+Labour
+Electrical
+Plumbing
+Carpentry
+Painting
+Transport
+Equipment
+Government
+Professional Fees
+Miscellaneous
+
+Users can create custom categories.
+
+Fields:
+
+- Category Name
+- Description
+- Expense Type
+- Active/Inactive
+
+---
+
+# 26. SUPPLIER / VENDOR MANAGEMENT
+
+Create optional Supplier management.
+
+Fields:
+
+- Supplier Name
+- Contact Person
+- Phone
+- Email
+- Address
+- GST Number
+- Notes
+
+Show supplier-wise total expense.
+
+Example:
+
+ABC Cement Supplier
+Total Purchase:
+₹85,000
+
+---
+
+# 27. WORKER MANAGEMENT
+
+Create worker records.
+
+Fields:
+
+- Worker Name
+- Labour Type
+- Phone
+- Daily Rate
+- Notes
+
+Show:
+
+- Total days worked
+- Total amount
+- Paid amount
+- Balance
+
+---
+
+# 28. RECEIPT / BILL ATTACHMENT
+
+Allow users to upload expense receipts.
+
+Support:
+
+- JPG
+- PNG
+- PDF
+
+Store attachment reference securely.
+
+Show receipt preview/download.
+
+Never expose private files publicly.
+
+Use a secure storage mechanism compatible with deployment.
+
+Design the storage layer so it can later use:
+
+- Cloudinary
+- Supabase Storage
+- S3-compatible storage
+
+Do not tightly couple the application to one provider.
+
+---
+
+# 29. USER PROFILE
+
+Create profile page.
+
+Show:
+
+- Name
+- Username
+- Email
+- Language
+- Created Date
+
+Allow:
+
+- Change name
+- Change email
+- Change password
+- Change language
+- Logout from all sessions
+
+---
+
+# 30. ADMIN DASHBOARD
+
+Admin must have a separate dashboard.
+
+Admin should be able to see:
+
+### Total Users
+### Active Users
+### Total Houses
+### Total Expenses Recorded
+### Total Tracked Construction Value
+
+Admin dashboard should show:
+
+- User registration trend
+- Active users
+- Number of houses
+- Expenses added
+- Most active users
+- Latest registered users
+
+---
+
+# 31. ADMIN USER MANAGEMENT
+
+Create:
+
+/admin/users
+
+Admin can view:
+
+- User Name
+- Username
+- Email
+- Created Date
+- Last Login
+- Number of Houses
+- Total Expenses
+- Account Status
+
+Actions:
+
+- View User
+- Disable User
+- Enable User
+- View User Activity
+
+Admin MUST NOT be able to view a user's plain-text password.
+
+Never expose passwords.
+
+---
+
+# 32. ADMIN USER DETAIL
+
+When admin selects a user, show:
+
+User profile
++
+House information
++
+Expense summary
++
+Recent activities
+
+Example:
+
+User:
+Dhinesh
+
+House:
+My New House
+
+Total Expenses:
+₹8,45,000
+
+Material:
+₹5,20,000
+
+Labour:
+₹2,15,000
+
+Other:
+₹1,10,000
+
+Admin should be able to understand how the application is being used.
+
+---
+
+# 33. ADMIN ACTIVITY LOG
+
+Create an audit log.
+
+Track important actions:
+
+- User registration
+- Login
+- Logout
+- Expense created
+- Expense updated
+- Expense deleted
+- House created
+- House updated
+- Password changed
+- Admin login
+- User disabled/enabled
+
+Fields:
+
+- User
+- Action
+- Resource
+- Timestamp
+- IP if appropriate
+- Metadata where safe
+
+Do NOT store passwords or sensitive secrets in audit logs.
+
+---
+
+# 34. ADMIN ANALYTICS
+
+Provide simple analytics.
+
+Charts:
+
+- New users by month
+- Active users
+- Expenses by month
+- Houses created
+- Most-used expense categories
+- Most active users
+
+Make this useful but not unnecessarily complex.
+
+---
+
+# 35. NOTIFICATION SYSTEM
+
+Show user-friendly notifications for:
+
+- Expense successfully added
+- Expense updated
+- Expense deleted
+- Report generated
+- Login failure
+- Profile updated
+
+Use toast notifications.
+
+Do not use alerts for every small action.
+
+---
+
+# 36. DATA OWNERSHIP / SECURITY
+
+A user can ONLY access their own:
+
+- Houses
+- Expenses
+- Materials
+- Labour
+- Suppliers
+- Reports
+- Attachments
+- Profile
+
+Never allow a user to access another user's data simply by changing an ID in the URL or API request.
+
+Every API must validate authenticated ownership server-side.
+
+Example:
+
+GET /api/expenses?id=123
+
+must verify that expense 123 belongs to the authenticated user.
+
+Do not trust client-side IDs.
+
+---
+
+# 37. DATABASE DESIGN
+
+Create a proper Prisma schema.
+
+At minimum create entities similar to:
+
+User
+Session
+House
+Expense
+ExpenseCategory
+ConstructionStage
+Material
+LabourWorker
+LabourEntry
+Supplier
+Attachment
+AuditLog
+PasswordResetToken
+
+Use:
+
+- Primary keys
+- Foreign keys
+- Indexes
+- Unique constraints
+- CreatedAt
+- UpdatedAt
+- Soft-delete where useful
+
+Add indexes for common queries:
+
+- userId
+- houseId
+- expenseDate
+- categoryId
+- constructionStageId
+- paymentStatus
+
+Optimize database queries.
+
+Do not fetch unnecessary columns.
+
+---
+
+# 38. API DESIGN
+
+Create clean API endpoints.
+
+Examples:
+
+POST /api/auth/register
+POST /api/auth/login
+POST /api/auth/logout
+POST /api/auth/forgot-password
+POST /api/auth/reset-password
+
+GET /api/houses
+POST /api/houses
+GET /api/houses/:id
+PUT /api/houses/:id
+
+GET /api/expenses
+POST /api/expenses
+GET /api/expenses/:id
+PUT /api/expenses/:id
+DELETE /api/expenses/:id
+
+GET /api/reports/daily
+GET /api/reports/monthly
+GET /api/reports/yearly
+GET /api/reports/custom
+
+GET /api/admin/users
+GET /api/admin/users/:id
+PATCH /api/admin/users/:id/status
+GET /api/admin/analytics
+GET /api/admin/audit-logs
+
+Use:
+
+- Proper HTTP status codes
+- Validation
+- Error handling
+- Authorization
+- Consistent response structure
+
+Example:
+
+{
+  "success": true,
+  "data": {},
+  "message": "Expense created successfully"
+}
+
+Error:
+
+{
+  "success": false,
+  "message": "Expense not found"
+}
+
+Do not leak internal database errors to the client.
+
+---
+
+# 39. UI / UX DESIGN
+
+The interface should be extremely user-friendly.
+
+Design for:
+
+### Desktop
+### Tablet
+### Mobile
+
+Desktop layout:
+
+Sidebar
++
+Top header
++
+Main content
+
+Sidebar:
+
+Dashboard
+Expenses
+Materials
+Labour
+Suppliers
+Construction Stages
+Reports
+My House
+Profile
+
+Admin sidebar:
+
+Dashboard
+Users
+Analytics
+Audit Logs
+Settings
+
+---
+
+# 40. MOBILE-FIRST EXPERIENCE
+
+The application should be very usable from a mobile phone because construction expenses may be entered directly from the work site.
+
+On mobile:
+
+- Bottom navigation or compact navigation
+- Large Add Expense button
+- Easy date selection
+- Easy amount entry
+- Easy category selection
+- Responsive cards instead of huge tables
+
+Do not make the mobile UI feel like a compressed desktop application.
+
+---
+
+# 41. DESIGN SYSTEM
+
+Use a consistent design system.
+
+Use:
+
+- Proper spacing
+- Clear typography
+- Rounded cards
+- Professional buttons
+- Consistent inputs
+- Accessible contrast
+- Proper loading states
+- Skeleton loaders
+- Empty states
+- Error states
+
+Use icons meaningfully.
+
+Do not overuse gradients, animations, or glassmorphism.
+
+The design should look professional enough for a real commercial application.
+
+---
+
+# 42. DASHBOARD EXAMPLE
+
+Create a dashboard similar in concept to:
+
+------------------------------------------------
+VeetuKanakku
+Good Morning 👋
+
+My House
+Total Budget             ₹25,00,000
+Total Spent              ₹12,48,500
+Remaining                ₹12,51,500
+Budget Used                    49.94%
+
+Today's Expense             ₹8,250
+This Month                ₹1,45,500
+
+[ + Add Expense ]
+
+Expense Trend
+[ Chart ]
+
+Category Breakdown
+[ Chart ]
+
+Construction Progress
+[ Chart ]
+
+Recent Expenses
+------------------------------------------------
+
+Make this visually polished.
+
+---
+
+# 43. SEARCH AND FILTERS
+
+Expense search should support:
+
+- Description
+- Supplier
+- Worker
+- Category
+- Stage
+
+Filters:
+
+- Today
+- This Week
+- This Month
+- This Year
+- Custom Date
+- Expense Type
+- Category
+- Payment Status
+
+---
+
+# 44. SORTING
+
+Allow sorting by:
+
+- Date
+- Amount
+- Category
+- Type
+- Supplier
+- Payment Status
+
+---
+
+# 45. CURRENCY
+
+Use Indian Rupees by default.
+
+All calculations must use:
+
+INR / ₹
+
+Currency formatting must be consistent throughout the application.
+
+Do not use floating-point arithmetic carelessly for financial values.
+
+Use decimal-safe database types for money.
+
+---
+
+# 46. DATE AND TIME
+
+Default timezone:
+
+Asia/Kolkata
+
+Display dates in an Indian-friendly format.
+
+Example:
+
+04 Oct 2026
+
+Use consistent date handling between frontend, backend, database, and reports.
+
+---
+
+# 47. VALIDATION
+
+Use Zod for backend and frontend validation where practical.
+
+Validation examples:
+
+- Amount cannot be negative
+- Quantity cannot be negative
+- Unit price cannot be negative
+- Date cannot be invalid
+- Required fields must be enforced
+- Email validation
+- Duplicate username handling
+- Duplicate email handling
+
+Display clear field-level errors.
+
+---
+
+# 48. ERROR HANDLING
+
+Implement:
+
+- 404 page
+- Unauthorized page
+- Forbidden page
+- Global error boundary
+- API error handling
+- Database error handling
+- Network error handling
+- Empty states
+
+Messages should be understandable to normal users.
+
+---
+
+# 49. LOADING STATES
+
+Every major async operation should have loading feedback.
+
+Examples:
+
+- Login loading
+- Registration loading
+- Dashboard loading
+- Expense table loading
+- PDF generation loading
+- File upload loading
+
+Use skeleton loaders where appropriate.
+
+Do not make the application appear frozen.
+
+---
+
+# 50. PERFORMANCE
+
+Optimize application performance.
+
+Requirements:
+
+- Server-side data fetching where appropriate
+- Pagination for large datasets
+- Indexed database queries
+- Avoid unnecessary API calls
+- Avoid unnecessary React re-renders
+- Debounce search
+- Lazy-load heavy components
+- Optimize PDF generation
+- Optimize charts
+- Cache safe static data where appropriate
+
+The architecture should support thousands of users and large numbers of expense records.
+
+---
+
+# 51. SECURITY REQUIREMENTS
+
+Implement strong security practices.
+
+At minimum:
+
+- Password hashing
+- Secure sessions
+- HTTP-only cookies
+- CSRF considerations
+- Input validation
+- Output sanitization
+- Authorization checks
+- Rate limiting for auth endpoints
+- Protection against brute-force login attempts
+- Secure headers
+- No secret values in frontend
+- No passwords in logs
+- SQL injection protection through Prisma
+- File type validation
+- File size validation
+
+Admin routes must be protected separately.
+
+---
+
+# 52. ENVIRONMENT VARIABLES
+
+Create:
+
+.env.example
+
+Possible variables:
+
+DATABASE_URL=
+AUTH_SECRET=
+ADMIN_USERNAME=
+ADMIN_PASSWORD=
+NEXT_PUBLIC_APP_URL=
+STORAGE_PROVIDER=
+STORAGE_URL=
+STORAGE_KEY=
+STORAGE_SECRET=
+
+Never commit real credentials.
+
+Create proper documentation explaining required environment variables.
+
+---
+
+# 53. SEED DATA
+
+Create Prisma seed script.
+
+Seed:
+
+- Admin user
+- Default expense categories
+- Default construction stages
+- Default units
+- Default labour types
+- Default expense types
+
+Do not insert sample personal user data unless clearly marked as demo data.
+
+---
+
+# 54. ADMIN CREDENTIAL HANDLING
+
+Admin credentials should come from environment configuration during initial setup.
+
+Example:
+
+ADMIN_USERNAME=admin
+ADMIN_PASSWORD=<secure-password>
+
+On startup/seed:
+
+- Create admin account if it does not exist
+- Hash the password
+- Never return password in API responses
+- Never display it in UI
+- Never commit it to Git
+
+---
+
+# 55. PDF REPORT DESIGN
+
+Generate PDF with:
+
+Header:
+
+VeetuKanakku
+House Construction Expense Report
+
+House Information
+
+Financial Summary
+
+Expense Summary
+
+Detailed Transactions
+
+Footer:
+
+Generated by VeetuKanakku
+Generated Date
+
+Use proper page breaks.
+
+Large reports must span multiple pages correctly.
+
+Tables must not overflow page boundaries.
+
+---
+
+# 56. EXPORT FEATURES
+
+Where useful, add:
+
+- Export CSV
+- Download PDF
+
+For CSV:
+
+Date
+Description
+Type
+Category
+Stage
+Quantity
+Unit
+Unit Price
+Total
+Paid
+Balance
+Supplier/Worker
+Payment Status
+
+---
+
+# 57. SETTINGS
+
+Create settings page.
+
+Options:
+
+- Language
+- Currency
+- Date Format
+- Notification preferences
+- Profile
+- Security
+
+Keep settings simple.
+
+---
+
+# 58. ACCESSIBILITY
+
+Follow accessible design practices:
+
+- Keyboard navigation
+- Proper labels
+- Focus states
+- ARIA where needed
+- Accessible forms
+- Sufficient contrast
+- Screen-reader-friendly buttons
+
+---
+
+# 59. FOLDER STRUCTURE
+
+Create a clean scalable project structure.
+
+Example:
+
+app/
+  (auth)/
+    login/
+    register/
+    forgot-password/
+
+  dashboard/
+  expenses/
+  materials/
+  labour/
+  suppliers/
+  stages/
+  reports/
+  house/
+  profile/
+
+  admin/
+    login/
+    dashboard/
+    users/
+    analytics/
+    audit-logs/
+
+  api/
+
+components/
+  ui/
+  dashboard/
+  expenses/
+  materials/
+  labour/
+  reports/
+  admin/
+
+lib/
+  auth/
+  db/
+  validations/
+  services/
+  pdf/
+  permissions/
+  utils/
+
+prisma/
+  schema.prisma
+  seed.ts
+
+locales/
+  en.json
+  ta.json
+
+---
+
+# 60. ARCHITECTURE PRINCIPLES
+
+Follow:
+
+- Clean architecture principles
+- Reusable components
+- Separation of concerns
+- Strong TypeScript types
+- Reusable service functions
+- Centralized validation
+- Centralized authorization
+- Centralized error handling
+- Minimal duplication
+
+Do not put all application logic into page components.
+
+Do not create giant files containing everything.
+
+---
+
+# 61. ADMIN vs USER ROUTE PROTECTION
+
+Implement middleware or server-side route protection.
+
+Rules:
+
+USER:
+Can access only user pages and own data.
+
+ADMIN:
+Can access admin pages and administrative APIs.
+
+USER trying to access /admin:
+Return 403/redirect.
+
+ADMIN APIs must verify role server-side.
+
+Do not rely only on hiding frontend menus.
+
+---
+
+# 62. IMPORTANT BUSINESS LOGIC
+
+When an expense is created:
+
+1. Validate user authentication.
+2. Validate house ownership.
+3. Validate expense fields.
+4. Calculate total.
+5. Save expense.
+6. Update relevant summary data if needed.
+7. Record audit event.
+8. Return success response.
+9. Refresh dashboard values.
+
+Dashboard must always show accurate financial totals.
+
+---
+
+# 63. FINANCIAL CALCULATIONS
+
+Implement:
+
+Total Expense
+
+Total Material Cost
+
+Total Labour Cost
+
+Total Other Cost
+
+Today Expense
+
+Current Month Expense
+
+Current Year Expense
+
+Budget Remaining
+
+Budget Utilization %
+
+Category Total
+
+Stage Total
+
+Supplier Total
+
+Worker Total
+
+Pending Payment
+
+Paid Amount
+
+Outstanding Amount
+
+Use database aggregation instead of downloading all records to the frontend.
+
+---
+
+# 64. USER EXPERIENCE EXAMPLE
+
+Typical user flow:
+
+Register
+→ Login
+→ Create House
+→ Enter Budget
+→ Dashboard
+→ Add Cement Expense
+→ Add Brick Expense
+→ Add Steel Expense
+→ Add Mason Labour
+→ Add Assistant Labour
+→ Add Electrical Expense
+→ Add Plumbing Expense
+→ View Dashboard
+→ View Monthly Report
+→ Download Monthly PDF
+
+This flow must feel natural.
+
+---
+
+# 65. EXAMPLE EXPENSE
+
+Example:
+
+Date:
+04-Oct-2026
+
+Type:
+Material
+
+Category:
+Cement
+
+Stage:
+Foundation
+
+Description:
+UltraTech Cement
+
+Quantity:
+50
+
+Unit:
+Bag
+
+Unit Price:
+₹420
+
+Total:
+₹21,000
+
+Supplier:
+ABC Building Materials
+
+Payment Method:
+UPI
+
+Paid:
+₹21,000
+
+Balance:
+₹0
+
+Notes:
+Foundation work
+
+The dashboard must immediately reflect the ₹21,000 expense.
+
+---
+
+# 66. USER DASHBOARD SUMMARY QUERY
+
+Do not calculate all dashboard values incorrectly on the client.
+
+Use optimized backend/database queries.
+
+Example:
+
+Today:
+SUM(expenses where date = today)
+
+Month:
+SUM(expenses where date between first day and last day)
+
+Year:
+SUM(expenses where date between Jan 1 and Dec 31)
+
+Total:
+SUM(all user's expenses for selected house)
+
+---
+
+# 67. AUDIT / DATA INTEGRITY
+
+For delete operations:
+
+Prefer soft delete for financial records where practical.
+
+Example:
+
+deletedAt
+
+Deleted expense should not appear in normal reports.
+
+But audit history should remain.
+
+---
+
+# 68. TESTING
+
+Create tests for important logic.
+
+At minimum test:
+
+- Registration
+- Login
+- Password validation
+- Authorization
+- Expense creation
+- Expense total calculation
+- Labour calculation
+- Budget calculation
+- Report date filtering
+- User ownership checks
+- Admin authorization
+
+Create test data where useful.
+
+---
+
+# 69. BUILD / DEPLOYMENT
+
+The application must be designed for Vercel deployment.
+
+Provide:
+
+- package.json
+- Prisma setup
+- database migration commands
+- seed command
+- environment setup
+- production build script
+
+Ensure:
+
+npm install
+
+npm run dev
+
+npm run build
+
+npm start
+
+work correctly.
+
+Provide:
+
+README.md
+
+with exact deployment steps.
+
+---
+
+# 70. VERCEL DEPLOYMENT DOCUMENTATION
+
+README should explain:
+
+1. Create PostgreSQL database.
+2. Configure DATABASE_URL.
+3. Configure AUTH_SECRET.
+4. Configure ADMIN_USERNAME.
+5. Configure ADMIN_PASSWORD.
+6. Run Prisma migration.
+7. Run seed.
+8. Push project to Git.
+9. Connect Git repository to Vercel.
+10. Add environment variables.
+11. Deploy.
+12. Test user login.
+13. Test admin login.
+14. Test PDF generation.
+
+---
+
+# 71. DATABASE MIGRATIONS
+
+Use Prisma migrations properly.
+
+Commands should be documented.
+
+Example:
+
+npx prisma generate
+
+npx prisma migrate dev
+
+npx prisma db seed
+
+For production:
+
+npx prisma migrate deploy
+
+---
+
+# 72. PRODUCTION QUALITY REQUIREMENT
+
+Do NOT generate a fake/demo application.
+
+Do NOT leave:
+
+- TODO comments
+- Placeholder APIs
+- Fake authentication
+- Fake reports
+- Dummy buttons
+- Broken navigation
+- Hardcoded dashboard numbers
+- Hardcoded user data
+
+Every major feature should actually work.
+
+---
+
+# 73. IMPORTANT IMPLEMENTATION RULE
+
+Before writing code:
+
+1. Analyze the complete requirements.
+2. Design the database.
+3. Design authentication architecture.
+4. Design API architecture.
+5. Design UI structure.
+6. Design report system.
+7. Design admin architecture.
+8. Then implement the application.
+
+Do not randomly generate files without architecture.
+
+---
+
+# 74. DEVELOPMENT APPROACH
+
+Build in phases internally:
+
+Phase 1:
+Project setup + database + authentication
+
+Phase 2:
+House/project setup
+
+Phase 3:
+Expense management
+
+Phase 4:
+Materials + labour + suppliers
+
+Phase 5:
+Dashboard + analytics
+
+Phase 6:
+Reports + PDF
+
+Phase 7:
+Admin
+
+Phase 8:
+Tamil/English
+
+Phase 9:
+Security + validation
+
+Phase 10:
+Responsive UI + performance
+
+Phase 11:
+Testing
+
+Phase 12:
+Deployment preparation
+
+Do not stop after creating the UI.
+
+---
+
+# 75. FINAL QUALITY CHECK
+
+Before considering the project complete, verify:
+
+AUTH
+- Register works
+- Login works
+- Logout works
+- Password hashing works
+- User sessions work
+- Admin login works
+- Role protection works
+
+USER
+- Create house
+- Edit house
+- Add expense
+- Edit expense
+- Delete expense
+- Search expenses
+- Filter expenses
+- Materials
+- Labour
+- Suppliers
+- Categories
+- Construction stages
+- Dashboard
+- Budget calculations
+
+REPORTS
+- Daily report
+- Monthly report
+- Yearly report
+- Custom date report
+- PDF download
+- Correct totals
+
+LANGUAGE
+- English works
+- Tamil works
+- Language switching works
+
+ADMIN
+- User list
+- User details
+- Activity
+- Analytics
+- Enable/disable users
+- No password exposure
+
+SECURITY
+- Authorization checks
+- Validation
+- Secure cookies
+- No secret exposure
+
+DEPLOYMENT
+- Production build succeeds
+- Prisma migrations work
+- Environment variables documented
+- Vercel deployment ready
+
+---
+
+# 76. FINAL DELIVERABLE
+
+Provide the complete working source code for the application.
+
+Include:
+
+- Full frontend
+- Full backend
+- Database schema
+- Prisma migrations
+- Seed script
+- Authentication
+- Authorization
+- Admin system
+- Expense management
+- Material management
+- Labour management
+- Supplier management
+- Dashboard
+- Reports
+- PDF generation
+- English + Tamil
+- Responsive UI
+- Validation
+- Security
+- Tests
+- README
+- .env.example
+
+The result should look and behave like a **real production-ready house construction expense management SaaS application**.
+
+Do not provide only an architecture document.
+
+Actually implement the complete application.
+
+---
+
+# 77. IMPORTANT CODING STYLE
+
+Use:
+
+- TypeScript strictly
+- Reusable components
+- Clear naming
+- Small maintainable files
+- Proper error handling
+- Strong typing
+- Comments only where useful
+- No unnecessary complexity
+
+Avoid:
+
+- Any/unknown unless necessary
+- Duplicate code
+- Hardcoded credentials
+- Hardcoded financial values
+- Insecure localStorage authentication
+- Client-only authorization
+- Giant components
+
+---
+
+# 78. UI QUALITY BAR
+
+The application should feel similar to a modern SaaS dashboard.
+
+Reference qualities:
+
+- Clean navigation
+- Excellent spacing
+- Clear financial cards
+- Easy forms
+- Excellent mobile experience
+- Professional charts
+- Clear tables
+- Good empty states
+- Good loading states
+- Good error handling
+
+Most importantly:
+
+**A normal person who is building a house should be able to open the application and immediately understand where to add today's expense.**
+
+---
+
+# 79. START IMPLEMENTATION
+
+Start by creating the project architecture and database schema.
+
+Then implement authentication.
+
+Then implement the user dashboard.
+
+Then implement expense management.
+
+Then implement materials, labour, suppliers, stages, reports, PDF, language support and admin.
+
+Keep all code production-ready.
+
+When making implementation decisions not explicitly specified here, choose the option that is:
+
+1. Most secure
+2. Most maintainable
+3. Most scalable
+4. Most user-friendly
+5. Most compatible with Vercel
+
+Do not ask unnecessary clarification questions.
+
+Make sensible product decisions and continue implementation.
+
+Application Name:
+**VeetuKanakku**
+
+English:
+**House Construction Expense Manager**
+
+Tamil:
+**வீட்டு கட்டுமான செலவு மேலாண்மை**

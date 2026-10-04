@@ -1,0 +1,256 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String         @id @default(cuid())
+  name              String
+  username          String         @unique
+  email             String         @unique
+  passwordHash      String
+  role              String         @default("USER") // USER | ADMIN
+  preferredLanguage String         @default("en")   // en | ta
+  isActive          Boolean        @default(true)
+  lastLogin         DateTime?
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+
+  houses            House[]
+  expenses          Expense[]
+  materials         Material[]
+  labourWorkers     LabourWorker[]
+  labourEntries     LabourEntry[]
+  suppliers         Supplier[]
+  auditLogs         AuditLog[]
+  sessions          Session[]
+
+  @@index([email])
+  @@index([username])
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([token])
+  @@index([userId])
+}
+
+model House {
+  id                     String         @id @default(cuid())
+  userId                 String
+  user                   User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name                   String
+  ownerName              String
+  location               String
+  startDate              DateTime
+  expectedCompletionDate DateTime?
+  estimatedBudget        Float
+  numberOfFloors         Int            @default(1)
+  houseType              String         @default("Independent House")
+  notes                  String?
+  isDefault              Boolean        @default(false)
+  createdAt              DateTime       @default(now())
+  updatedAt              DateTime       @updatedAt
+  deletedAt              DateTime?
+
+  expenses               Expense[]
+  materials              Material[]
+  labourWorkers          LabourWorker[]
+  labourEntries          LabourEntry[]
+  suppliers              Supplier[]
+
+  @@index([userId])
+}
+
+model ExpenseCategory {
+  id        String   @id @default(cuid())
+  name      String
+  nameTa    String?
+  type      String   @default("MATERIAL")
+  icon      String?
+  isDefault Boolean  @default(true)
+  userId    String?
+  createdAt DateTime @default(now())
+
+  @@index([type])
+}
+
+model ConstructionStage {
+  id         String   @id @default(cuid())
+  name       String
+  nameTa     String?
+  orderIndex Int      @default(0)
+  isDefault  Boolean  @default(true)
+  userId     String?
+  createdAt  DateTime @default(now())
+
+  @@index([orderIndex])
+}
+
+model Expense {
+  id                  String    @id @default(cuid())
+  houseId             String
+  house               House     @relation(fields: [houseId], references: [id], onDelete: Cascade)
+  userId              String
+  user                User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expenseDate         DateTime
+  expenseType         String    @default("MATERIAL") // MATERIAL, LABOUR, CONTRACTOR, TRANSPORTATION, EQUIPMENT, SERVICE, MISCELLANEOUS
+  category            String
+  stage               String
+  itemDescription     String
+  quantity            Float     @default(1)
+  unit                String    @default("Unit")
+  unitPrice           Float     @default(0)
+  totalAmount         Float
+  supplierName        String?
+  workerName          String?
+  contractorName      String?
+  phoneNumber         String?
+  paymentMethod       String    @default("CASH") // CASH, UPI, BANK_TRANSFER, CARD, CHEQUE, CREDIT, OTHER
+  paidAmount          Float     @default(0)
+  balanceAmount       Float     @default(0)
+  paymentStatus       String    @default("PAID") // PAID, PARTIAL, UNPAID
+  receiptUrl          String?
+  notes               String?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  deletedAt           DateTime?
+
+  @@index([houseId])
+  @@index([userId])
+  @@index([expenseDate])
+  @@index([expenseType])
+  @@index([category])
+  @@index([stage])
+  @@index([paymentStatus])
+}
+
+model Material {
+  id            String   @id @default(cuid())
+  houseId       String
+  house         House    @relation(fields: [houseId], references: [id], onDelete: Cascade)
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name          String
+  category      String
+  quantity      Float
+  unit          String
+  unitPrice     Float
+  totalCost     Float
+  supplier      String?
+  purchaseDate  DateTime
+  invoiceNumber String?
+  notes         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([houseId])
+  @@index([userId])
+  @@index([name])
+}
+
+model LabourWorker {
+  id            String        @id @default(cuid())
+  houseId       String
+  house         House         @relation(fields: [houseId], references: [id], onDelete: Cascade)
+  userId        String
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name          String
+  labourType    String
+  phoneNumber   String?
+  dailyRate     Float
+  notes         String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  labourEntries LabourEntry[]
+
+  @@index([houseId])
+  @@index([userId])
+}
+
+model LabourEntry {
+  id              String        @id @default(cuid())
+  houseId         String
+  house           House         @relation(fields: [houseId], references: [id], onDelete: Cascade)
+  userId          String
+  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  labourWorkerId  String?
+  labourWorker    LabourWorker? @relation(fields: [labourWorkerId], references: [id], onDelete: SetNull)
+  workerName      String
+  labourType      String
+  workDate        DateTime
+  numberOfWorkers Int           @default(1)
+  numberOfDays    Float         @default(1)
+  dailyRate       Float
+  totalAmount     Float
+  paidAmount      Float         @default(0)
+  balanceAmount   Float         @default(0)
+  paymentMethod   String        @default("CASH")
+  paymentStatus   String        @default("PAID")
+  notes           String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@index([houseId])
+  @@index([userId])
+  @@index([workDate])
+}
+
+model Supplier {
+  id            String   @id @default(cuid())
+  houseId       String
+  house         House    @relation(fields: [houseId], references: [id], onDelete: Cascade)
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name          String
+  contactPerson String?
+  phone         String?
+  email         String?
+  address       String?
+  gstNumber     String?
+  notes         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([houseId])
+  @@index([userId])
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  userId     String?
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userEmail  String?
+  action     String
+  resource   String
+  resourceId String?
+  ipAddress  String?
+  metadata   String?
+  createdAt  DateTime @default(now())
+
+  @@index([userId])
+  @@index([action])
+  @@index([createdAt])
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  email     String
+  token     String   @unique
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([token])
+  @@index([email])
+}
