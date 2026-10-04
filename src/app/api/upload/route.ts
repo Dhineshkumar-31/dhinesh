@@ -39,13 +39,25 @@ export async function POST(req: NextRequest) {
     const ext = file.name.split(".").pop() || "bin";
     const uniqueName = `${Date.now()}_${crypto.randomBytes(8).toString("hex")}.${ext}`;
 
-    const uploadsDir = path.join(process.cwd(), "public", "uploads");
-    await mkdir(uploadsDir, { recursive: true });
+    let fileUrl: string;
 
-    const filePath = path.join(uploadsDir, uniqueName);
-    await writeFile(filePath, buffer);
+    // In serverless environments like Vercel (read-only filesystem), encode as base64 Data URL
+    if (process.env.VERCEL || process.env.STORAGE_PROVIDER === "base64") {
+      fileUrl = `data:${file.type};base64,${buffer.toString("base64")}`;
+    } else {
+      try {
+        const uploadsDir = path.join(process.cwd(), "public", "uploads");
+        await mkdir(uploadsDir, { recursive: true });
 
-    const fileUrl = `/uploads/${uniqueName}`;
+        const filePath = path.join(uploadsDir, uniqueName);
+        await writeFile(filePath, buffer);
+
+        fileUrl = `/uploads/${uniqueName}`;
+      } catch (fsErr) {
+        console.warn("Local storage write failed, falling back to data URL:", fsErr);
+        fileUrl = `data:${file.type};base64,${buffer.toString("base64")}`;
+      }
+    }
 
     return NextResponse.json({
       success: true,
